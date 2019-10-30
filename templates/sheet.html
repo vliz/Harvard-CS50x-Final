@@ -1,0 +1,27 @@
+{% extends "layout.html" %}
+
+{% block main %}
+
+    <!-- http://getbootstrap.com/docs/4.1/content/typography/ -->
+    <h1 class="mb-3">Sheet</h1>
+
+    <table class="table">
+        <thead class="thead-dark">
+            <tr>
+              <th scope="col">Name</th>
+              <th scope="col">House</th>
+              <th scope="col">Position</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for line in data %}
+                <tr>
+                {% for element in line %}
+                    <td> {{ element }} </td>
+                {% endfor %}
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+{% endblock %}

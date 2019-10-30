@@ -1,0 +1,72 @@
+{% extends "layout.html" %}
+
+{% block main %}
+
+    <!-- http://getbootstrap.com/docs/4.1/content/typography/ -->
+    <h1 class="mb-3">Form</h1>
+
+    <!-- http://getbootstrap.com/docs/4.1/components/forms/ -->
+    <form action="/form" method="post">
+
+        <!-- Ask the user's name -->
+        <div class="form-group">
+            <input autocomplete="off" autofocus class="form-control" name="name" placeholder="Name" type="text">
+        </div>
+
+        <!-- Ask the user to pick a House -->
+        <div class="form-group", style="width: 100px">
+            <select class="form-control" name="house">
+                <option disabled selected value="">House</option>
+                <option value="Gryffindor">Gryffindor</option>
+                <option value="Hufflepuff">Hufflepuff</option>
+                <option value="Ravenclaw">Ravenclaw</option>
+                <option value="Slytherin">Slytherin</option>
+            </select>
+        </div>
+
+        <!-- Ask the user to pick a Preferred Position -->
+        <div class="form-group">
+            <input type="radio" name="position" value="Beater"> Beater<br>
+            <input type="radio" name="position" value="Chaser"> Chaser<br>
+            <input type="radio" name="position" value="Keeper"> Keeper<br>
+            <input type="radio" name="position" value="Seeker"> Seeker<br>
+        </div>
+
+        <!-- http://getbootstrap.com/docs/4.1/components/buttons/ -->
+        <button class="btn btn-primary" type="submit">Submit</button>
+
+    </form>
+
+    <script>
+
+        var chk = document.getElementsByName("position");
+        var counter = 0;
+
+        document.querySelector('form').onsubmit = function() {
+            if (!document.querySelector('input').value) {
+                alert('You must specify your name.');
+                return false;
+            }
+            else if (!document.querySelector('select').value) {
+                alert('You must specify your house.');
+                return false;
+            }
+
+            for (var i = 0; i < chk.length; i++) {
+                if (chk[i].checked) {
+                    counter++;
+                    break;
+                }
+            }
+
+            if (counter == 0) {
+                alert('You must specify your position.');
+                return false;
+            }
+
+            return true;
+        };
+
+    </script>
+
+{% endblock %}
