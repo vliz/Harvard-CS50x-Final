@@ -35,7 +35,8 @@ def post_form():
         return render_template("error.html", message="You must fill all the fields.")
     with open("survey.csv", "a") as file:
         writer = csv.DictWriter(file, fieldnames=["name", "house", "position"])
-        writer.writerow({"name": request.form.get("name"), "house": request.form.get("house"), "position": request.form.get("position")})
+        writer.writerow({"name": request.form.get("name"), "house": request.form.get(
+            "house"), "position": request.form.get("position")})
     return redirect("/sheet")
 
 
