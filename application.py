@@ -143,7 +143,19 @@ def buy():
 @app.route("/check", methods=["GET"])
 def check():
     """Return true if username available, else false, in JSON format"""
-    return jsonify("TODO")
+
+    # If request made via GET
+    if request.method=="GET":
+
+        # Takes username as argument from username
+        username = request.args.get('username')
+
+        # If not user, then username is free
+        users = db.execute("SELECT username FROM users WHERE username=:username", username=username)
+        if not users:
+            return jsonify(True)
+        else:
+            return jsonify(False)
 
 
 @app.route("/history")
@@ -287,7 +299,7 @@ def register():
         # Log them in automatically and store id in session
         session["user_id"] = new_user_id
         flash("Registered!")
-        return redirect("/index")
+        return redirect("/")
 
     # via GET (as by clicking a link or via redirect)
     else:

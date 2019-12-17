@@ -18,4 +18,23 @@
         <button class="btn btn-primary" type="submit">Register</button>
     </form>
 
+    <script>
+        $(document).ready(function(){
+            $('#myForm').submit(function(event) {
+                event.preventDefault();
+                /* alert("Default prevented"); */
+                let username = $("#username").val();
+                $.get('/check?username=' + username, function(data) {
+                    if(data == false) {
+                        alert("Username taken.");
+                    }
+                    else {
+                        console.log("Username free.");
+                        $('#myForm').submit();
+                    }
+                });
+            });
+        });
+    </script>
+
 {% endblock %}
