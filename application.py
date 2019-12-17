@@ -23,6 +23,7 @@ def after_request(response):
     response.headers["Pragma"] = "no-cache"
     return response
 
+
 # Custom filter
 app.jinja_env.filters["usd"] = usd
 
@@ -58,7 +59,8 @@ def index():
         share_price = portfolio["price"]
         amount = shares * share_price
         capital += amount
-        db.execute("UPDATE portfolio SET total=:amount WHERE id=:id AND symbol=:symbol", amount=usd(amount), id=session["user_id"], symbol=symbol)
+        db.execute("UPDATE portfolio SET total=:amount WHERE id=:id AND symbol=:symbol",
+                   amount=usd(amount), id=session["user_id"], symbol=symbol)
 
     # get cash balance and add total
     cash = db.execute("SELECT cash FROM users WHERE id=:id", id=session["user_id"])
@@ -110,31 +112,25 @@ def buy():
 
         # add transaction into history database
         db.execute("INSERT INTO history(id, symbol, shares, price) \
-                    VALUES (:id, :symbol, :shares, :price)", \
-                    id=session["user_id"], symbol=quote["symbol"], shares=shares, price=usd(share_price))
+                    VALUES (:id, :symbol, :shares, :price)", id=session["user_id"], symbol=quote["symbol"], shares=shares, price=usd(share_price))
 
         # update cash balance
         db.execute("UPDATE users SET cash = cash - :price WHERE id = :id", price=share_price * shares, id=session["user_id"])
 
         # Select user shares of that symbol
         user_shares = db.execute("SELECT shares FROM portfolio \
-                           WHERE id = :id AND symbol=:symbol", \
-                           id=session["user_id"], symbol=quote["symbol"])
+                           WHERE id = :id AND symbol=:symbol", id=session["user_id"], symbol=quote["symbol"])
 
         # if user doesn't has shares of that symbol, create new stock object
         if not user_shares:
             db.execute("INSERT INTO portfolio (id, symbol, name, shares, price) \
-                        VALUES(:id, :symbol, :name, :shares, :price)", \
-                        id=session["user_id"], symbol=quote["symbol"], name=quote["name"], \
-                        shares=shares, price=quote["price"])
+                        VALUES(:id, :symbol, :name, :shares, :price)", id=session["user_id"], symbol=quote["symbol"], name=quote["name"], shares=shares, price=quote["price"])
 
         # Else increment the shares count
         else:
             shares_total = user_shares[0]["shares"] + shares
             db.execute("UPDATE portfolio SET shares=:shares \
-                        WHERE id=:id AND symbol=:symbol", \
-                        shares=shares_total, id=session["user_id"], \
-                        symbol=quote["symbol"])
+                        WHERE id=:id AND symbol=:symbol", shares=shares_total, id=session["user_id"], symbol=quote["symbol"])
 
         flash("Bought!")
         return redirect("/")
@@ -145,7 +141,7 @@ def check():
     """Return true if username available, else false, in JSON format"""
 
     # If request made via GET
-    if request.method=="GET":
+    if request.method == "GET":
 
         # Takes username as argument from username
         username = request.args.get('username')
@@ -163,8 +159,7 @@ def check():
 def history():
     """Show history of transactions"""
 
-    histories = db.execute("SELECT symbol, shares, price, date FROM history WHERE id = :id ORDER BY date ASC", id=session["user_id"])
-
+    histories = db.execute("SELECT symbol, shares, price, date FROM history WHERE id = :id", id=session["user_id"])
     return render_template("history.html", histories=histories)
 
 
@@ -215,6 +210,7 @@ def logout():
     # Redirect user to login form
     return redirect("/")
 
+
 @app.route("/funds", methods=["GET", "POST"])
 @login_required
 def funds():
@@ -242,7 +238,6 @@ def funds():
     # via GET
     else:
         return render_template("funds.html")
-
 
 
 @app.route("/quote", methods=["GET", "POST"])
@@ -331,8 +326,7 @@ def sell():
 
         # select the symbol shares of that user
         user_shares = db.execute("SELECT shares FROM portfolio \
-                                  WHERE id = :id AND symbol=:symbol", \
-                                  id=session["user_id"], symbol=quote["symbol"])
+                                  WHERE id = :id AND symbol=:symbol", id=session["user_id"], symbol=quote["symbol"])
 
         # check if enough shares to sell
         if not user_shares or int(user_shares[0]["shares"]) < shares:
@@ -344,14 +338,10 @@ def sell():
 
         # update history of the sale
         db.execute("INSERT INTO history (id, symbol, shares, price) \
-                    VALUES(:id, :symbol, :shares, :price)", \
-                    symbol=quote["symbol"], shares=-shares, \
-                    price=usd(share_price), id=session["user_id"])
+                    VALUES(:id, :symbol, :shares, :price)", symbol=quote["symbol"], shares=-shares, price=usd(share_price), id=session["user_id"])
 
         # update user cash
-        db.execute("UPDATE users SET cash = cash + :sale WHERE id = :id", \
-                    id=session["user_id"], \
-                    sale=total_price)
+        db.execute("UPDATE users SET cash = cash + :sale WHERE id = :id", id=session["user_id"], sale=total_price)
 
         # decrement the shares count
         shares_total = user_shares[0]["shares"] - shares
@@ -359,15 +349,11 @@ def sell():
         # if after decrement is zero, delete shares from portfolio
         if shares_total == 0:
             db.execute("DELETE FROM portfolio \
-                        WHERE id=:id AND symbol=:symbol", \
-                        id=session["user_id"], \
-                        symbol=quote["symbol"])
+                        WHERE id=:id AND symbol=:symbol", id=session["user_id"], symbol=quote["symbol"])
         # otherwise, update portfolio shares count
         else:
             db.execute("UPDATE portfolio SET shares=:shares \
-                    WHERE id=:id AND symbol=:symbol", \
-                    shares=shares_total, id=session["user_id"], \
-                    symbol=quote["symbol"])
+                    WHERE id=:id AND symbol=:symbol", shares=shares_total, id=session["user_id"], symbol=quote["symbol"])
 
         flash("Sold!")
         return redirect("/")
@@ -378,7 +364,6 @@ def sell():
         WHERE id = :id", id=session["user_id"])
 
         return render_template("sell.html", stocks=stocks)
-
 
 
 def errorhandler(e):
