@@ -1,0 +1,11 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    Apology
+{% endblock %}
+
+{% block main %}
+    <h1>{{ top | urlencode }}</h1>
+    <img alt="{{ top }}" class="border" src="/static/pug.jpg" title="{{ top }}">
+    <h1>{{ bottom | urlencode }}</h1>
+{% endblock %}

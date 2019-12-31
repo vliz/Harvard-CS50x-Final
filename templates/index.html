@@ -1,0 +1,25 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    Main
+{% endblock %}
+
+{% block main %}
+    <div class="container">
+            {% for name in names %}
+                <h1>Welcome back, {{ name.name }}!</h1>
+            {% endfor %}
+            <p>Keep Track of All Your Travel Histories and Memberships</p>
+        </div>
+    </div>
+    <form action="/" method="post">
+        <div class="btnset">
+            <input class="btn btn-danger" type="submit" name="action" value="Add New Hotel / Airline Membership"/>
+            <input class="btn btn-danger" type="submit" name="action" value="Membership List"/>
+        </div>
+        <div class="btnset">
+            <input class="btn btn-danger" type="submit" name="action" value="Add New Travel Entry"/>
+            <input class="btn btn-danger" type="submit" name="action" value="Travel Journal"/>
+        </div>
+    </form>
+{% endblock %}

@@ -1,0 +1,34 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    Membership List
+{% endblock %}
+
+{% block main %}
+
+    <table class="table table-striped" style="width:100%">
+      <tr>
+        <th>Type</th>
+        <th>Hotel / Airline Name</th>
+        <th>Username</th>
+        <th>Email Address</th>
+        <th>Member Number</th>
+        <th>Points</th>
+      </tr>
+    {% for mem in mems %}
+      <tr>
+        <td>{{ mem.comptype }}</td>
+        <td>{{ mem.compname }}</td>
+        <td>{{ mem.nameuser }}</td>
+        <td>{{ mem.email }}</td>
+        <td>{{ mem.memnum }}</td>
+        <td>{{ mem.points }}</td>
+      </tr>
+    {% endfor %}
+    </table>
+
+    <form action="/member" method="post">
+        <button class="btn btn-danger" type="submit">Add Another Membership</button>
+    </form>
+
+{% endblock %}
