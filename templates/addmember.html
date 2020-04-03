@@ -1,0 +1,33 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    Add Airline / Hotel Membership
+{% endblock %}
+
+{% block main %}
+    <form action="/addmember" method="post">
+        <div class="form-group">
+            <select class="form-control" name="comptype" required>
+                <option disabled selected value>Hotel or Airline?</option>
+                    <option value="Hotel">Hotel</option>
+                    <option value="Airline">Airline</option>
+            </select>
+        </div>
+        <div class="form-group">
+            <input autocomplete="off" autofocus class="form-control" name="compname" placeholder="Hotel / Airline Name" type="text">
+        </div>
+        <div class="form-group">
+            <input autocomplete="off" autofocus class="form-control" name="nameuser" placeholder="Username" type="text">
+        </div>
+        <div class="form-group">
+            <input autocomplete="off" autofocus class="form-control" name="email" placeholder="Email Address" type="email">
+        </div>
+        <div class="form-group">
+            <input autocomplete="off" autofocus class="form-control" name="memnum" placeholder="Membership Number" type="number">
+        </div>
+        <div class="form-group">
+            <input autocomplete="off" autofocus class="form-control" name="points" placeholder="Points Balance" type="number">
+        </div>
+        <button class="btn btn-danger" type="submit">Add New Membership</button>
+    </form>
+{% endblock %}

@@ -1,0 +1,47 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    Add Entry
+{% endblock %}
+
+{% block main %}
+    <form action="/addentry" method="post">
+        <div class="form-group">
+            <input autocomplete="off" autofocus class="form-control" name="place" placeholder="City / Country Visited" type="text">
+        </div>
+        <div class="form-group">
+            <select class="form-control" name="airline" required>
+                <option disabled selected value>Airline</option>
+
+                {% for air in airs %}
+                    <option value="{{ air.compname }}">{{ air.compname }}</option>
+                {% endfor %}
+            </select>
+        </div>
+        <div class="form-group">
+            <select class="form-control" name="hotel" required>
+                <option disabled selected value>Hotel</option>
+
+                {% for hot in hots %}
+                    <option value="{{ hot.compname }}">{{ hot.compname }}</option>
+                {% endfor %}
+            </select>
+        </div>
+        <div class="form-group">
+            <input autocomplete="off" autofocus class="form-control" name="depart" placeholder="Depart Date" type="text" onfocus="(this.type='date')" onblur="(this.type='text')">
+        </div>
+        <div class="form-group">
+            <input autocomplete="off" autofocus class="form-control" name="arrive" placeholder="Return Date" type="text" onfocus="(this.type='date')" onblur="(this.type='text')">
+        </div>
+        <div class="form-group">
+            <input autocomplete="off" autofocus class="form-control" name="miles" placeholder="Airline Miles Accrued" type="number">
+        </div>
+        <div class="form-group">
+            <input autocomplete="off" autofocus class="form-control" name="points" placeholder="Hotel Points Accrued" type="number">
+        </div>
+        <div class="form-group">
+            <input autocomplete="off" autofocus class="form-control" name="money" placeholder="Total Money Spent" type="number">
+        </div>
+        <button class="btn btn-danger" type="submit">Add Travel Entry</button>
+    </form>
+{% endblock %}

@@ -1,0 +1,38 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    Journal
+{% endblock %}
+
+{% block main %}
+
+    <table class="table table-striped" style="width:100%">
+      <tr>
+        <th>City/Country</th>
+        <th>Airline Code</th>
+        <th>Hotel Name</th>
+        <th>Depart Date</th>
+        <th>Return Date</th>
+        <th>Airline Miles Accrued</th>
+        <th>Hotel Points Accrued</th>
+        <th>Total Money Spent</th>
+      </tr>
+    {% for trip in trips %}
+      <tr>
+        <td>{{ trip.place }}</td>
+        <td>{{ trip.airline }}</td>
+        <td>{{ trip.hotel }}</td>
+        <td>{{ trip.depart }}</td>
+        <td>{{ trip.arrive }}</td>
+        <td>{{ trip.miles }}</td>
+        <td>{{ trip.points }}</td>
+        <td>{{ trip.money }}</td>
+      </tr>
+    {% endfor %}
+    </table>
+
+    <form action="/diary" method="post">
+        <button class="btn btn-danger" type="submit">Add Another Travel Entry</button>
+    </form>
+
+{% endblock %}
